@@ -27,7 +27,8 @@
                     [mv             :as mv]
                     [nemesis        :as nemesis]
                     [wr-register    :as wr-register]
-                    [write-isolation :as write-isolation]]
+                    [write-isolation :as write-isolation]
+                    [broadcast-tables :as broadcast-tables]]
             [scylla.collections [map :as cmap]
                                 [set :as cset]]
             [qbits.commons.enum])
@@ -52,7 +53,8 @@
    :wr-register     wr-register/workload
    :write-isolation              write-isolation/workload
    :write-isolation-single-row   write-isolation/single-row-workload
-   :write-isolation-single-write write-isolation/single-write-workload})
+   :write-isolation-single-write write-isolation/single-write-workload
+   :broadcast-tables             broadcast-tables/workload})
 
 (def standard-workloads
   "The workload names we run for test-all by default."
@@ -197,7 +199,10 @@
             :decommission (atom #{}) ; TODO: remove me
             :nonserializable-keys [:conductors] ; TODO: remove me
             :generator    generator
-            :pure-generators true})))
+            :pure-generators true
+            :extra-args (if (= (name (:workload opts)) "broadcast-tables")
+              "--experimental-features=raft --experimental-features=broadcast-tables"
+              nil)})))
 
 (def consistency-levels
   "A set of keyword consistency levels the C* driver supports."

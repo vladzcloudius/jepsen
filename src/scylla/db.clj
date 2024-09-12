@@ -342,9 +342,10 @@
   "Extra scylla args which are substituted into the SCYLLA_ARGS config."
   [test]
   ; Custom logger log levels
-  (->> (:logger-log-level test)
-       (map (partial str "--logger-log-level "))
-       (str/join " ")))
+  (cond-> (->> (:logger-log-level test)
+               (map (partial str "--logger-log-level "))
+               (str/join " "))
+          (some? (:extra-args test)) (str (:extra-args test) " ")))
 
 (defn configure-journalctl!
   "Sets up journalctl logging stuff"
