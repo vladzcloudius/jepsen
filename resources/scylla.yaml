@@ -501,8 +501,8 @@ auto_bootstrap: true
 
 # Try to speed up cluster formation
 ring_delay_ms: 3000
-# skip_wait_for_gossip_to_settle: 5
-skip_wait_for_gossip_to_settle: 0
+skip_wait_for_gossip_to_settle: 5
+# skip_wait_for_gossip_to_settle: 0
 # When we concurrently restart nodes, they'll lock up on boot for 300 seconds
 # by default.
 shadow_round_ms: 1000
